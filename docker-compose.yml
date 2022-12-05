@@ -1,0 +1,30 @@
+version: '3'
+services:
+  coti-fullnode:
+    image: "coti/fullnode:3"
+    build:
+      context: repos/coti-node/
+      args:
+        MODULE: "fullnode"
+    ports:
+      - 7070:7070
+    volumes:
+      - ./data/coti-fullnode:/app/data
+    working_dir: /app/data
+    restart: unless-stopped
+    command: [ "java", "-jar", "/app/fullnode/target/fullnode-3.1.1.RELEASE.jar", "--spring.config.additional-location=./fullnode1.properties" ]
+  nginx:
+    image: jonasal/nginx-certbot:latest
+    build: repos/docker-nginx-certbot/src
+    restart: unless-stopped
+    environment:
+      - CERTBOT_EMAIL=<CHANGE>
+      - RENEWAL_INTERVAL=8d
+      - ELLIPTIC_CURVE=secp256r1
+      - RSA_KEY_SIZE=2048
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./data/letsencrypt:/etc/letsencrypt
+      - ./data/nginx:/etc/nginx/user_conf.d
