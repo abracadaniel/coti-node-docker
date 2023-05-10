@@ -12,7 +12,7 @@ services:
       - ./data/coti-fullnode:/app/data
     working_dir: /app/data
     restart: unless-stopped
-    command: [ "java", "-jar", "/app/fullnode/target/fullnode-3.1.1.RELEASE.jar", "--spring.config.additional-location=./fullnode1.properties" ]
+    command: [ "java", "-jar", "/app/fullnode/target/fullnode-3.1.3.RELEASE.jar", "--spring.config.additional-location=./fullnode1.properties" ]
   nginx:
     image: jonasal/nginx-certbot:latest
     build: repos/docker-nginx-certbot/src
